@@ -1,0 +1,37 @@
+<ng-container *ngIf="loading$ | async; else content"> Loading... </ng-container>
+
+<ng-template #content>
+  <table class="table">
+    <thead>
+      <tr>
+        <th [attr.colspan]="2" style="position: relative">
+          <div class="w-100 text-center">Candidates</div>
+          <button
+            class="candidates__add__new btn btn-light"
+            (click)="onAddNewCandidateClicked()"
+          >
+            +
+          </button>
+        </th>
+      </tr>
+      <tr>
+        <th>Name</th>
+        <th>Votes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let candidate of candidates$ | async; trackBy: trackByFn">
+        <td>{{ candidate.lastName }} {{ candidate.firstName }}</td>
+        <td>
+          {{ candidate.votes }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+
+<ng-container *ngIf="error$ | async as error">
+  <ngb-alert [type]="'danger'" [dismissible]="false"
+    ><strong>Error:</strong> {{ error }}</ngb-alert
+  >
+</ng-container>

@@ -1,0 +1,63 @@
+<div class="modal-header">
+  <h5>
+    Add New {{ type }}
+  </h5>
+  
+</div>
+<div class="modal-body">
+  <form id="NewUserForm" #newUserForm="ngForm" ngbAutofocus>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="FirstName" class="control-label">
+          First Name
+        </label>
+        <input
+          name="first-name"
+          id="FirstName"
+          type="text"
+          class="form-control"
+          [(ngModel)]="user.firstName"
+          [ngClass]="{
+            'is-invalid': firstNameControl.touched && firstNameControl.invalid
+          }"
+          #firstNameControl="ngModel"
+          required
+        />
+        <div
+          class="invalid-feedback"
+        >
+          First name is required.
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="LastName" class="control-label">
+          Last Name
+        </label>
+        <input
+          name="last-name"
+          id="LastName"
+          type="text"
+          class="form-control"
+          [(ngModel)]="user.lastName"
+          [ngClass]="{
+            'is-invalid': lastNameControl.touched && lastNameControl.invalid
+          }"
+          #lastNameControl="ngModel"
+          required
+        />
+        <div
+          class="invalid-feedback"
+        >
+          Last name is required.
+        </div>
+      </div>
+    </div>
+  
+
+  </form>
+
+</div>
+<div class="modal-footer">
+  <button class="btn btn-soft-secondary" (click)="activeModal.dismiss()">Close</button>
+  <button class="btn btn-soft-primary" form="NewUserForm" (click)="onSubmitClicked()" [disabled]="isSaving">{{ isSaving ? 'Saving...' : 'Submit' }}</button>
+</div>

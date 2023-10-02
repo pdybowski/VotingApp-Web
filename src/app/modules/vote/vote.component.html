@@ -1,0 +1,53 @@
+<section class="m-4">
+  <h1>Vote!</h1>
+  <form #voteForm="ngForm">
+    <div class="row gap-2">
+      <div class="form-group col-12 col-md-4 col-xl-3 p-0">
+        <select
+          name="voter-selector"
+          id="VoterSelector"
+          class="form-control"
+          [(ngModel)]="selectedVoterId"
+          #voterSelector="ngModel"
+          required
+        >
+          <option [value]="null">-- Select One --</option>
+          <option
+            *ngFor="let voter of voters$ | async; trackBy: trackByFn"
+            [value]="voter.id"
+          >
+            {{ voter.lastName }} {{ voter.firstName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group col-12 col-md-4 col-xl-3 p-0">
+        <select
+          name="candidate-selector"
+          id="CandidateSelector"
+          class="form-control"
+          [(ngModel)]="selectedCandidateId"
+          #candidateSelector="ngModel"
+          required
+        >
+          <option [value]="null">-- Select One --</option>
+          <option
+            *ngFor="let candidate of candidates$ | async; trackBy: trackByFn"
+            [value]="candidate.id"
+          >
+            {{ candidate.lastName }} {{ candidate.firstName }}
+          </option>
+        </select>
+      </div>
+
+      <button
+        class="btn btn-primary"
+        style="width: fit-content"
+        (click)="onVoteClicked()"
+        [disabled]="!selectedVoterId || !selectedCandidateId || isVoting"
+      >
+        {{ isVoting ? 'Sending...' : 'Vote!' }}
+      </button>
+    </div>
+  </form>
+</section>
