@@ -16,7 +16,20 @@ export const loadVotersFailure = createAction(
 
 // add new voter
 
-export const addVoter = createAction('[Voters] Add Voter', props<Voter>());
+export const addVoter = createAction(
+  '[Voters] Add Voter',
+  props<Omit<Voter, 'id' | 'hasVoted'>>()
+);
+
+export const addVoterSuccess = createAction(
+  '[Voters] Add Voters Success',
+  props<Voter>()
+);
+
+export const addVoterFailure = createAction(
+  '[Voters] Add Voters Failure',
+  props<{ error: string }>()
+);
 
 // add a vote
 

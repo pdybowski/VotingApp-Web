@@ -22,7 +22,21 @@ export class CandidateEffects {
             })
           ),
           catchError((error) =>
-            of(CandidateAction.loadCandidatesFailure({ error: error }))
+            of(CandidateAction.loadCandidatesFailure({ error: error?.message }))
+          )
+        )
+      )
+    )
+  );
+
+  addCandidate$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(CandidateAction.addCandidate),
+      switchMap((candidate) =>
+        this.candidatesService.addCandidate(candidate).pipe(
+          map((candidate) => CandidateAction.addCandidateSuccess(candidate)),
+          catchError((error) =>
+            of(CandidateAction.addCandidateFailure({ error: error?.message }))
           )
         )
       )

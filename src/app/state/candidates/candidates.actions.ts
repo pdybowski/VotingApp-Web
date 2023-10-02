@@ -18,7 +18,17 @@ export const loadCandidatesFailure = createAction(
 
 export const addCandidate = createAction(
   '[Candidates] Add Candidate',
+  props<Omit<Candidate, 'id' | 'votes'>>()
+);
+
+export const addCandidateSuccess = createAction(
+  '[Candidates] Add Candidate Success',
   props<Candidate>()
+);
+
+export const addCandidateFailure = createAction(
+  '[Candidates] Add Candidate Failure',
+  props<{ error: string }>()
 );
 
 // add a vote

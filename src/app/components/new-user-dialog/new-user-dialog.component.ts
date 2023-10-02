@@ -44,5 +44,6 @@ export class NewUserDialogComponent {
     if (!this.newUserForm.valid) return;
 
     this.save.emit(this.user);
+    this.activeModal.close();
   }
 }

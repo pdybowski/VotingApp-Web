@@ -5,12 +5,14 @@ import { Voter } from 'src/app/models';
 export type VoterState = {
   voters: Voter[];
   isLoading: boolean;
+  isAddignNew: boolean;
   error: string | null;
 };
 
 const initialState: VoterState = {
   voters: [],
   isLoading: false,
+  isAddignNew: false,
   error: null,
 };
 
@@ -35,13 +37,28 @@ export const votersReducer = createReducer(
       ...state,
       voters: [],
       isLoading: false,
-      error: error || 'Unable to load voters',
+      error: error || 'Unable to load voters.',
     };
   }),
-  on(VoterActions.addVoter, (state, newVoter) => {
+  on(VoterActions.addVoter, (state) => {
     return {
       ...state,
-      voters: [...state.voters, newVoter],
+      isAddignNew: true,
+    };
+  }),
+  on(VoterActions.addVoterSuccess, (state, voter) => {
+    return {
+      ...state,
+      voters: [...state.voters, voter],
+      isAddignNew: false,
+      error: null,
+    };
+  }),
+  on(VoterActions.addVoterFailure, (state, { error }) => {
+    return {
+      ...state,
+      isAddignNew: false,
+      error: error || 'Unable to add new voter.',
     };
   }),
   on(VoterActions.addVote, (state, { id }) => {

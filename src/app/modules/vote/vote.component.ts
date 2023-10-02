@@ -36,6 +36,14 @@ export class VoteComponent {
     this.voteForm.form.markAllAsTouched();
     if (!this.voteForm.valid) return;
 
+    this.vote();
+  }
+
+  trackByFn(index: number, user: Candidate | Voter) {
+    return user.id;
+  }
+
+  private vote() {
     this.isVoting = true;
     this.voteService
       .addVote({
@@ -57,10 +65,6 @@ export class VoteComponent {
       .add(() => {
         this.isVoting = false;
       });
-  }
-
-  trackByFn(index: number, user: Candidate | Voter) {
-    return user.id;
   }
 
   private cleanUp() {

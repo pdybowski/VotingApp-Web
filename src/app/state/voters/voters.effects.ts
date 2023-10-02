@@ -21,9 +21,23 @@ export class VotersEffects {
           catchError((error) =>
             of(
               VoterAction.loadVotersFailure({
-                error: error,
+                error: error?.message,
               })
             )
+          )
+        )
+      )
+    )
+  );
+
+  addVoter$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(VoterAction.addVoter),
+      switchMap((voter) =>
+        this.votersService.addVoter(voter).pipe(
+          map((voter) => VoterAction.addVoterSuccess(voter)),
+          catchError((error) =>
+            of(VoterAction.addVoterFailure({ error: error }))
           )
         )
       )

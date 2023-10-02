@@ -26,6 +26,11 @@
           {{ candidate.votes }}
         </td>
       </tr>
+      <tr *ngIf="addingNew$ | async" >
+        <td [attr.colspan]="2" class="text-center">
+          Adding new candidate...
+        </td>
+      </tr>
     </tbody>
   </table>
 </ng-template>

@@ -5,12 +5,14 @@ import { combineReducers, createReducer, on } from '@ngrx/store';
 export type CandidateState = {
   candidates: Candidate[];
   isLoading: boolean;
+  isAddingNew: boolean;
   error: string | null;
 };
 
 const initialState: CandidateState = {
   candidates: [],
   isLoading: false,
+  isAddingNew: false,
   error: null,
 };
 
@@ -40,10 +42,25 @@ export const candidateReducer = createReducer(
     };
   }),
   // add new candidate
-  on(CandidateAction.addCandidate, (state, candidate) => {
+  on(CandidateAction.addCandidate, (state) => {
+    return {
+      ...state,
+      isAddingNew: true,
+    };
+  }),
+  on(CandidateAction.addCandidateSuccess, (state, candidate) => {
     return {
       ...state,
       candidates: [...state.candidates, candidate],
+      isAddingNew: false,
+      error: null,
+    };
+  }),
+  on(CandidateAction.addCandidateFailure, (state, { error }) => {
+    return {
+      ...state,
+      isAddingNew: false,
+      error: error || 'Unable to add new candidate.',
     };
   }),
   // add a vote
