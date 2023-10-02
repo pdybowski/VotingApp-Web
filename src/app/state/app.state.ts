@@ -1,7 +1,7 @@
-import { CandidateState } from './candidates/candidates.reducer';
-import { VoterState } from './voters/voters.reducer';
+import { CandidatesState } from './candidates/candidates.store';
+import { VotersState } from './voters/voters.store';
 
 export type AppState = {
-  candidates: CandidateState;
-  voters: VoterState;
+  candidates: CandidatesState;
+  voters: VotersState;
 };

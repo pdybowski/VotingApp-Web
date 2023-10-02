@@ -1,34 +1,20 @@
 import { createReducer, on } from '@ngrx/store';
 import * as VoterActions from './voters.actions';
-import { Voter } from 'src/app/models';
-
-export type VoterState = {
-  voters: Voter[];
-  isLoading: boolean;
-  isAddignNew: boolean;
-  error: string | null;
-};
-
-const initialState: VoterState = {
-  voters: [],
-  isLoading: false,
-  isAddignNew: false,
-  error: null,
-};
+import { INIT_VOTERS_STATE, VotersActionStatus } from './voters.store';
 
 export const votersReducer = createReducer(
-  initialState,
+  INIT_VOTERS_STATE,
   on(VoterActions.loadVoters, (state) => {
     return {
       ...state,
-      isLoading: true,
+      status: VotersActionStatus.LOADING,
     };
   }),
   on(VoterActions.loadVotersSuccess, (state, { voters }) => {
     return {
       ...state,
       voters: voters,
-      isLoading: false,
+      status: VotersActionStatus.LOADED,
       error: null,
     };
   }),
@@ -36,28 +22,28 @@ export const votersReducer = createReducer(
     return {
       ...state,
       voters: [],
-      isLoading: false,
+      status: VotersActionStatus.LOADED,
       error: error || 'Unable to load voters.',
     };
   }),
   on(VoterActions.addVoter, (state) => {
     return {
       ...state,
-      isAddignNew: true,
+      status: VotersActionStatus.ADDING,
     };
   }),
   on(VoterActions.addVoterSuccess, (state, voter) => {
     return {
       ...state,
       voters: [...state.voters, voter],
-      isAddignNew: false,
+      status: VotersActionStatus.ADDED,
       error: null,
     };
   }),
   on(VoterActions.addVoterFailure, (state, { error }) => {
     return {
       ...state,
-      isAddignNew: false,
+      status: VotersActionStatus.ADDED,
       error: error || 'Unable to add new voter.',
     };
   }),

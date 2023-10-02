@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
 import { NewUserDialogComponent } from 'src/app/components';
 import { BaseUser, Candidate } from 'src/app/models';
-import { AppState } from 'src/app/state/app.state';
 import * as CandidateAction from 'src/app/state/candidates/candidates.actions';
 import * as CandidateSelector from 'src/app/state/candidates/candidates.selectors';
+import { CandidatesState } from 'src/app/state/candidates/candidates.store';
 
 @Component({
   selector: 'candidates',
@@ -16,11 +15,14 @@ import * as CandidateSelector from 'src/app/state/candidates/candidates.selector
 })
 export class CandidatesComponent implements OnInit {
   candidates$ = this.store.select(CandidateSelector.selectAllCandidates);
-  loading$ = this.store.pipe(map((status) => status.candidates.isLoading));
-  addingNew$ = this.store.pipe(map((status) => status.candidates.isAddingNew));
-  error$ = this.store.pipe(map((status) => status.candidates.error || null));
+  loading$ = this.store.select(CandidateSelector.selectIsAllCandidatesLoading);
+  addingNew$ = this.store.select(CandidateSelector.selectIsCandidateAdding);
+  error$ = this.store.select(CandidateSelector.selectError);
 
-  constructor(private store: Store<AppState>, private modalService: NgbModal) {}
+  constructor(
+    private store: Store<CandidatesState>,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
     this.store.dispatch(CandidateAction.loadCandidates());

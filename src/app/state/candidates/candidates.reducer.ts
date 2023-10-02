@@ -1,35 +1,24 @@
-import { Candidate } from 'src/app/models';
 import * as CandidateAction from './candidates.actions';
-import { combineReducers, createReducer, on } from '@ngrx/store';
-
-export type CandidateState = {
-  candidates: Candidate[];
-  isLoading: boolean;
-  isAddingNew: boolean;
-  error: string | null;
-};
-
-const initialState: CandidateState = {
-  candidates: [],
-  isLoading: false,
-  isAddingNew: false,
-  error: null,
-};
+import { createReducer, on } from '@ngrx/store';
+import {
+  INIT_CANDIDATES_STATE,
+  CandidatesActionStatus,
+} from './candidates.store';
 
 export const candidateReducer = createReducer(
-  initialState,
+  INIT_CANDIDATES_STATE,
   // load candidates
   on(CandidateAction.loadCandidates, (state) => {
     return {
       ...state,
-      isLoading: true,
+      status: CandidatesActionStatus.LOADING,
     };
   }),
   on(CandidateAction.loadCandidatesSuccess, (state, { candidates }) => {
     return {
       ...state,
       candidates: candidates,
-      isLoading: false,
+      status: CandidatesActionStatus.LOADED,
       error: null,
     };
   }),
@@ -37,7 +26,7 @@ export const candidateReducer = createReducer(
     return {
       ...state,
       candidates: [],
-      isLoading: false,
+      status: CandidatesActionStatus.LOADED,
       error: error || 'Unable to load candidates.',
     };
   }),
@@ -45,21 +34,21 @@ export const candidateReducer = createReducer(
   on(CandidateAction.addCandidate, (state) => {
     return {
       ...state,
-      isAddingNew: true,
+      status: CandidatesActionStatus.ADDING,
     };
   }),
   on(CandidateAction.addCandidateSuccess, (state, candidate) => {
     return {
       ...state,
       candidates: [...state.candidates, candidate],
-      isAddingNew: false,
+      status: CandidatesActionStatus.ADDED,
       error: null,
     };
   }),
   on(CandidateAction.addCandidateFailure, (state, { error }) => {
     return {
       ...state,
-      isAddingNew: false,
+      status: CandidatesActionStatus.ADDED,
       error: error || 'Unable to add new candidate.',
     };
   }),

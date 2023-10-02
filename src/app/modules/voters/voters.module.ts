@@ -6,6 +6,7 @@ import { votersReducer } from 'src/app/state/voters/voters.reducer';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { VotersService } from './voters.service';
 import { YesNoPipe } from 'src/app/pipes/yes-no.pipe';
+import { VOTERS_FEATURE_KEY } from 'src/app/state/voters/voters.store';
 
 @NgModule({
   declarations: [VotersComponent, YesNoPipe],
@@ -13,7 +14,7 @@ import { YesNoPipe } from 'src/app/pipes/yes-no.pipe';
   imports: [
     CommonModule,
     NgbAlertModule,
-    StoreModule.forFeature('voters', votersReducer),
+    StoreModule.forFeature(VOTERS_FEATURE_KEY, votersReducer),
   ],
   providers: [VotersService],
 })

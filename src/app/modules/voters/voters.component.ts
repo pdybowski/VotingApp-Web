@@ -7,6 +7,7 @@ import { AppState } from 'src/app/state/app.state';
 import * as VoterAction from 'src/app/state/voters/voters.actions';
 import * as VoterSelector from 'src/app/state/voters/voters.selectors';
 import { BaseUser } from 'src/app/models';
+import { VotersState } from 'src/app/state/voters/voters.store';
 
 @Component({
   selector: 'voters',
@@ -16,11 +17,14 @@ import { BaseUser } from 'src/app/models';
 })
 export class VotersComponent implements OnInit {
   voters$ = this.store.select(VoterSelector.selectAllVoters);
-  loading$ = this.store.pipe(map((status) => status.voters.isLoading));
-  addingNew$ = this.store.pipe(map((status) => status.voters.isAddignNew));
-  error$ = this.store.pipe(map((status) => status.voters.error || null));
+  loading$ = this.store.select(VoterSelector.selectIsAllVotersLoading);
+  addingNew$ = this.store.select(VoterSelector.selectIsVoterAdding);
+  error$ = this.store.select(VoterSelector.selectError);
 
-  constructor(private store: Store<AppState>, private modalService: NgbModal) {}
+  constructor(
+    private store: Store<VotersState>,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
     this.store.dispatch(VoterAction.loadVoters());
